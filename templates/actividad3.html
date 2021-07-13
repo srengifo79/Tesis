@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Herramienta Instituto</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+		<noscript><link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/noscript.css') }}" /></noscript>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="icon" href="http://www.ciegosysordos.org.co/wp/wp-content/uploads/2018/01/cropped-favicon_instituto_ciegos_sordos_valle_cauca-1-32x32.png" sizes="32x32" />
+  		<link rel="icon" href="http://www.ciegosysordos.org.co/wp/wp-content/uploads/2018/01/cropped-favicon_instituto_ciegos_sordos_valle_cauca-1-192x192.png" sizes="192x192" />
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+							<!-- Logo -->
+								<a href="/MenuInicio" class="logo">
+									<span class="title">Herramienta Instituto</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+						</div>
+					</header>
+					
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="/MenuInicio">Menu Inicio</a></li>
+							<li><a href="/SeleccionarActividad">Seleccionar Actividad</a></li>
+							<li><a href="/VerificarProgreso">Verificar Progreso</a></li>
+							<li><a href="/GenerarReporte">Generar Reporte</a></li>
+							<li><a href="/Configuracion">Configuracion</a></li>
+							<li><a href="/CerrarSesion">Cerrar Sesion</a></li>
+						</ul>
+					</nav>
+					
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+                            <!-- Form -->
+								<section>
+									<h2>Configuracion Actividad 3</h2>
+									<form action="/Actividad3" method="POST">
+										<div class="row">
+										    <div class="col-6 col-12-xsmall">
+												<p>Cuento a ser utilizado en la actividad</p>
+											</div>
+											<div class="col-6 col-12-xsmall">
+												<select required name="cuento" class="cuento" id="cuento">
+													<option value="seleccionar" disabled selected>Seleccionar cuento</option>
+												</select>
+										    </div>
+										</div>
+									    <div class="row infocuento" id="infocuento">
+										    <div class="col-6 col-12-xsmall">
+												<p>Cuento</p>
+											</div>
+											<div class="col-6 col-12-xsmall">
+												<p>Preguntas</p>
+										    </div>
+										    <div class="col-6 col-12-xsmall">
+												<textarea class="cuento" id="cuentocuento" rows="50" readonly></textarea>
+											</div>
+											<div class="col-6 col-12-xsmall">
+												<ul name="preguntas" class="preguntas" id="preguntas">
+												</ul>
+										    </div>
+										</div>
+										<div class="row">
+											<div class="col-12">
+												<ul class="actions">
+													<li><input type="submit" value="Continuar" class="primary" /></li>
+													<li><input type="reset" value="Cancelar" /></li>
+												</ul>
+											</div>
+										</div>
+									</form>
+								</section>
+							</div>
+						</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{{url_for('static', filename='assets/js/jquery.min.js')}}"></script>
+			<script src="{{url_for('static', filename='assets/js/browser.min.js')}}"></script>
+			<script src="{{url_for('static', filename='assets/js/breakpoints.min.js')}}"></script>
+			<script src="{{url_for('static', filename='assets/js/util.js')}}"></script>
+			<script src="{{url_for('static', filename='assets/js/main.js')}}"></script>
+			
+			
+			<script type="text/javascript">
+				var cuentos = {{cuentos | safe}};
+				var $select = $(".cuento");
+				console.log($select);
+				for (i=0;i<cuentos.length;i++) { 
+					cuentos[i] = JSON.parse(cuentos[i]);
+					$select.append($('<option></option>').val(cuentos[i].nombre).html(cuentos[i].nombre));
+				}
+			
+				document.getElementById('cuento').addEventListener('change', function (evt) {
+				    if (this.value != 'seleccionar') {
+				    	document.getElementById('infocuento').style.display = 'flex';
+				    	document.getElementById('cuentocuento').value = cuentos[0]['cuento'];
+				    	
+				    	$(function(){
+			                var $ul = $(".preguntas");
+			                for (i=0;i<cuentos[0]['preguntas'].length;i++){
+			                    $ul.append($('<li></li>').html(cuentos[0]['preguntas'][i]));
+			                }
+		            	});
+				    }
+				    else document.getElementById('infocuento').style.display = 'none';
+				});
+			</script>
+	</body>
+	
+	<style scoped>
+		.row {
+			padding-bottom: 20px;
+		}
+		
+		.cuento {
+			max-height: 40vh;
+			overflow: auto !important;
+		}
+		
+		.infocuento {
+			display: none;
+		}
+    </style>
+</html>
